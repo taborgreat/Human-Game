@@ -1,12 +1,22 @@
+import hangman
+import random
 running = 1
 humanList = []
+randomList = [1,2,3,4]
 
+foodState = ["starving", "hungry", "fed", "full", "stuffed"]
 
 class Human(object):
-    def __init__(self, name, age, weight):
+    def __init__(self, name, age, weight, strength=10, speed=6, hunger=foodState[2], intelligence=10, health=100):
         self.name = name.capitalize()
         self.age = age
         self.weight = weight
+        self.strength = strength
+        self.speed = speed
+        self.hunger = hunger
+        self.intelligence = intelligence
+        self.health = health
+
 
     def printStats(self):
         print(f"You've created a {self.age} year old human has the name {self.name}, and weighs {self.weight} pounds.")
@@ -25,9 +35,9 @@ def introduction():
 
 
 def basicChoice():
-    choice = input("0: Create Human   1: Kill Human   2: View Humans \n >: ")
-    while choice != '0' and choice != '1' and choice != '2':
-        choice = input("0: Create Human   1: Kill Human   2: View Humans \n >: ")
+    choice = input("0: Create Human   1: Kill Human   2: View Humans   3: Train Humans  \n >: ")
+    while choice != '0' and choice != '1' and choice != '2' and choice != '3':
+        choice = input("0: Create Human   1: Kill Human   2: View Humans   3: Train Humans \n >: ")
 
     if choice == '0':
         createHuman()
@@ -35,6 +45,8 @@ def basicChoice():
         killHuman()
     if choice == '2':
         viewHumans()
+    if choice == '3':
+        trainHumans()
 
 
 def createHuman():
@@ -98,10 +110,62 @@ def viewHumans():
         return()
     print("These are your humans:")
     for x in range(len(humanList)):
-        print(humanList[x].name)
+        print(f"Name: {humanList[x].name}")
         print(f"{humanList[x].age} years old")
         print(f"{humanList[x].weight} pounds")
+        print(f"They are {humanList[x].hunger}")
+        print(f"Health: {humanList[x].strength}")
+        print(f"Strength: {humanList[x].strength}")
+        print(f"Speed: {humanList[x].speed}")
+        print(f"Intelligence: {humanList[x].intelligence}")
         print("-"*30)
+
+def trainHumans():
+    traineeHuman = None
+    if len(humanList) == 0:
+        print ("You have no humans to train.")
+        return()
+
+    for x in range(len(humanList)):
+        print(f"Your Humans: {humanList[x].name}")
+    choice = input("Enter the name of the Human you would like to train: ")
+
+
+    for x in range(len(humanList)):
+        if humanList[x].name != choice.capitalize():
+            print("This human does not exist.")
+            trainHumans()
+        else:
+            print(f"How would you like to train {humanList[x].name}?")
+            traineeHuman = humanList[x]
+            break
+
+    choice = input("0: Train Strength   1: Train Speed   2: Train Intelligence \n >: ")
+    while choice != '0' and choice != '1' and choice != '2':
+        choice = input("0: Train Strength   1: Train Speed   2: Train Intelligence \n >: ")
+
+    if choice == '0':
+        trainStrength(traineeHuman)
+    if choice == '1':
+        trainSpeed(traineeHuman)
+    if choice == '2':
+        trainIntelligence(traineeHuman)
+
+
+
+def trainStrength(trainee):
+    print(trainee)
+
+def trainSpeed(trainee):
+    print(trainee)
+
+def trainIntelligence(trainee):
+    if hangman.game(trainee):
+        increase = random.choice(randomList)
+        trainee.intelligence += increase
+        print(f"{trainee.name}'s intelligence increased from {trainee.intelligence - increase} to {trainee.intelligence}!\n")
+    else:
+        print(f"{trainee.name}'s training failed. Try again next time.")
 
 introduction()
 
